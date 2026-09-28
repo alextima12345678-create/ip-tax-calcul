@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Калькулятор налогов и взносов ИП 2026 | Онлайн расчет УСН</title>
+  <meta name="description" content="Бесплатный калькулятор налогов УСН 6% и 15% для ИП на 2026 год. Расчет фиксированных страховых взносов 57 390 ₽, допвзноса 1%, налогового вычета и чистой прибыли.">
+  <meta name="yandex-verification" content="0c403fdf16505e07" />
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #16a34a;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 16px; line-height: 1.5; }
+    .container { max-width: 620px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 24px; padding-top: 8px; }
+    header h1 { font-size: 22px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+    header p { font-size: 14px; color: var(--text-muted); }
+
+    .card { background: var(--card-bg); border-radius: var(--radius); padding: 20px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.03); margin-bottom: 20px; }
+    
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+    
+    .input-wrap { position: relative; }
+    .input-wrap input { width: 100%; padding: 12px 14px; font-size: 16px; border: 1.5px solid var(--border); border-radius: 10px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+    .input-wrap input:focus { border-color: var(--primary); }
+    .input-suffix { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 15px; }
+
+    .toggle-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .toggle-btn { padding: 10px; border: 1.5px solid var(--border); background: #f1f5f9; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; transition: all 0.2s; }
+    .toggle-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+    .results-card { background: #0f172a; color: #fff; border-radius: var(--radius); padding: 20px; margin-bottom: 24px; }
+    .results-card h3 { font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 16px; }
+    
+    .result-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 14px; }
+    .result-row span { color: #cbd5e1; }
+    .result-row strong { font-size: 15px; color: #fff; }
+    
+    .result-divider { height: 1px; background: #334155; margin: 14px 0; }
+    .result-main { display: flex; justify-content: space-between; align-items: baseline; }
+    .result-main .title { font-size: 15px; font-weight: 700; color: #fff; }
+    .result-main .amount { font-size: 24px; font-weight: 800; color: #38bdf8; }
+
+    .offers-title { font-size: 17px; font-weight: 700; margin-bottom: 12px; text-align: center; }
+    .offers-subtitle { font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 16px; margin-top: -8px; }
+
+    .offer-card { background: var(--card-bg); border-radius: var(--radius); padding: 16px; border: 1.5px solid var(--border); margin-bottom: 12px; display: flex; flex-direction: column; gap: 10px; }
+    .offer-header { display: flex; justify-content: space-between; align-items: center; }
+    .offer-bank { font-weight: 700; font-size: 16px; }
+    .offer-badge { background: #dcfce7; color: var(--success); font-size: 11px; font-weight: 700; padding: 4px 8px; border-radius: 6px; }
+    .offer-features { font-size: 13px; color: var(--text-muted); list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .offer-features li::before { content: "✓ "; color: var(--success); font-weight: bold; }
+    
+    .offer-btn { display: block; text-align: center; background: var(--primary); color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; padding: 12px; border-radius: 10px; transition: background 0.2s; }
+    .offer-btn:hover { background: var(--primary-hover); }
+
+    .ad-mark { font-size: 10px; color: #94a3b8; text-align: right; margin-top: 2px; }
+
+    /* SEO FAQ Стили */
+    .seo-section { margin-top: 28px; }
+    .seo-section h2 { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 8px; text-align: center; }
+    .seo-section .seo-desc { font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 16px; }
+    
+    .faq-item { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+    .faq-item summary { padding: 14px 16px; font-size: 14px; font-weight: 600; cursor: pointer; user-select: none; list-style: none; display: flex; justify-content: space-between; align-items: center; color: var(--text); }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { content: "+"; font-size: 18px; color: var(--primary); font-weight: bold; transition: transform 0.2s; }
+    .faq-item[open] summary::after { content: "−"; }
+    .faq-content { padding: 0 16px 14px 16px; font-size: 13px; color: var(--text-muted); line-height: 1.6; border-top: 1px solid #f1f5f9; padding-top: 10px; }
+    .faq-content strong { color: var(--text); }
+    .faq-content ul { margin-left: 18px; margin-top: 6px; }
+
+    footer { text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 28px; padding-bottom: 16px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Калькулятор налогов ИП 2026</h1>
+    <p>Расчет налога УСН, фиксированных взносов и чистой прибыли</p>
+  </header>
+
+  <div class="card">
+    <div class="form-group">
+      <label>Система налогообложения</label>
+      <div class="toggle-group" id="regimeToggle">
+        <div class="toggle-btn active" data-regime="usn6">УСН «Доходы» 6%</div>
+        <div class="toggle-btn" data-regime="usn15">УСН 15% (Дох. - Расх.)</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="incomeInput">Планируемый доход за год</label>
+      <div class="input-wrap">
+        <input type="number" id="incomeInput" placeholder="1 500 000" value="1500000" step="10000">
+        <span class="input-suffix">₽</span>
+      </div>
+    </div>
+
+    <div class="form-group" id="expenseGroup" style="display: none;">
+      <label for="expenseInput">Расходы за год (подтвержденные)</label>
+      <div class="input-wrap">
+        <input type="number" id="expenseInput" placeholder="600 000" value="600000" step="10000">
+        <span class="input-suffix">₽</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Наличие наемных сотрудников</label>
+      <div class="toggle-group" id="employeeToggle">
+        <div class="toggle-btn active" data-emp="no">Без сотрудников</div>
+        <div class="toggle-btn" data-emp="yes">С сотрудниками</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="results-card">
+    <h3>Итоги расчета за год</h3>
+    
+    <div class="result-row">
+      <span>Фиксированные взносы (2026 г.):</span>
+      <strong id="fixedRes">57 390 ₽</strong>
+    </div>
+
+    <div class="result-row">
+      <span>Взнос 1% (с дохода свыше 300 тыс. ₽):</span>
+      <strong id="onePercentRes">12 000 ₽</strong>
+    </div>
+
+    <div class="result-row">
+      <span>Налог УСН к уплате (с вычетом):</span>
+      <strong id="taxRes">20 610 ₽</strong>
+    </div>
+
+    <div class="result-divider"></div>
+
+    <div class="result-row">
+      <span>Всего налогов и взносов:</span>
+      <strong id="totalTaxesRes" style="color: #f87171;">90 000 ₽</strong>
+    </div>
+
+    <div class="result-main">
+      <div class="title">Чистый доход на руках:</div>
+      <div class="amount" id="netProfitRes">1 410 000 ₽</div>
+    </div>
+  </div>
+
+  <div class="offers-title">Где выгоднее открыть счет для ИП?</div>
+  <div class="offers-subtitle">Банки с бесплатной онлайн-бухгалтерией для расчета налогов и взносов</div>
+
+  <!-- Оффер 1: Альфа-Банк -->
+  <div class="offer-card">
+    <div class="offer-header">
+      <div class="offer-bank">Альфа-Банк</div>
+      <div class="offer-badge">Быстрый старт</div>
+    </div>
+    <ul class="offer-features">
+      <li>Бесплатное открытие расчетного счета онлайн</li>
+      <li>Кэшбэк до 10% на бизнес-расходы по бизнес-карте</li>
+      <li>Бесплатные переводы физлицам на стартовых тарифах</li>
+    </ul>
+    <a href="https://my.saleads.pro/s/a19fw?erid=2VtzqwHSHcA" target="_blank" rel="nofollow noopener" class="offer-btn">Узнать тарифы и открыть</a>
+    <div class="ad-mark">Реклама. АО «АЛЬФА-БАНК», ИНН 7728168971, erid: 2VtzqwHSHcA</div>
+  </div>
+
+  <!-- Оффер 2: Ак Барс Банк -->
+  <div class="offer-card">
+    <div class="offer-header">
+      <div class="offer-bank">Ак Барс Банк</div>
+      <div class="offer-badge">0 ₽ обслуживание</div>
+    </div>
+    <ul class="offer-features">
+      <li>Бесплатное открытие и ведение счета на старте</li>
+      <li>Бесплатные переводы налогов и платежей в бюджет</li>
+      <li>Удобный интернет-банк для бизнеса и онлайн-сервисы</li>
+    </ul>
+    <a href="https://my.saleads.pro/s/vtJr7?erid=2VtzqwUmHL2" target="_blank" rel="nofollow noopener" class="offer-btn">Открыть расчетный счет</a>
+    <div class="ad-mark">Реклама. ПАО «АК БАРС» БАНК, ИНН 1653001805, erid: 2VtzqwUmHL2</div>
+  </div>
+
+  <!-- Оффер 3: Азиатско-Тихоокеанский Банк -->
+  <div class="offer-card">
+    <div class="offer-header">
+      <div class="offer-bank">Азиатско-Тихоокеанский Банк (АТБ)</div>
+      <div class="offer-badge">Выгодные тарифы</div>
+    </div>
+    <ul class="offer-features">
+      <li>Бесплатное дистанционное открытие расчетного счета</li>
+      <li>Начисление процентов на остаток средств на счете</li>
+      <li>Быстрые расчеты с контрагентами и персональный менеджер</li>
+    </ul>
+    <a href="https://my.saleads.pro/s/wxbnd?erid=2VtzqwBWLUn" target="_blank" rel="nofollow noopener" class="offer-btn">Оформить счет в АТБ</a>
+    <div class="ad-mark">Реклама. «Азиатско-Тихоокеанский Банк» (АО), ИНН 2801023444, erid: 2VtzqwBWLUn</div>
+  </div>
+
+  <!-- SEO-блок вопросов и ответов (FAQ) -->
+  <section class="seo-section">
+    <h2>Справка по налогам и страховым взносам ИП в 2026 году</h2>
+    <p class="seo-desc">Правила расчета, ставки, лимиты и вычеты по НК РФ</p>
+
+    <div class="faq-item">
+      <details>
+        <summary>Сколько составляют фиксированные взносы ИП за себя в 2026 году?</summary>
+        <div class="faq-content">
+          В 2026 году размер обязательных фиксированных страховых взносов на обязательное пенсионное (ОПС) и медицинское (ОМС) страхование для индивидуальных предпринимателей составляет <strong>57 390 рублей</strong> (пп. 1 п. 1.2 ст. 430 НК РФ). Взносы уплачиваются единым налоговым платежом (ЕНП) на единый налоговый счет (ЕНС) независимо от того, велась деятельность или нет.
+        </div>
+      </details>
+    </div>
+
+    <div class="faq-item">
+      <details>
+        <summary>Как рассчитывается дополнительный взнос 1% свыше 300 000 ₽?</summary>
+        <div class="faq-content">
+          Если суммарный доход ИП за 2026 год превышает 300 000 рублей, предприниматель обязан доплатить 1% пенсионных взносов с суммы превышения. Формула: <em>(Доход - 300 000) × 1%</em>. Законодательством установлен максимальный предел для этого взноса на 2026 год — <strong>321 818 рублей</strong> (пп. 2 п. 1.2 ст. 430 НК РФ).
+        </div>
+      </details>
+    </div>
+
+    <div class="faq-item">
+      <details>
+        <summary>Как уменьшить налог УСН «Доходы» 6% на страховые взносы?</summary>
+        <div class="faq-content">
+          Предприниматели на УСН 6% могут уменьшать авансовые платежи и итоговый налог на сумму подлежащих уплате фиксированных взносов (57 390 ₽) и дополнительного взноса 1%:
+          <ul>
+            <li><strong>ИП без сотрудников</strong> могут уменьшить налог вплоть до 100% (до полного обнуления налога).</li>
+            <li><strong>ИП с наемными сотрудниками</strong> могут уменьшить налог максимум на 50% (п. 3.1 ст. 346.21 НК РФ).</li>
+          </ul>
+          С подачей уведомлений о зачете переплат спешить не требуется — вычет производится на взносы, подлежащие уплате в отчетном налоговом периоде.
+        </div>
+      </details>
+    </div>
+
+    <div class="faq-item">
+      <details>
+        <summary>Как рассчитывается минимальный налог на УСН 15% («Доходы - Расходы»)?</summary>
+        <div class="faq-content">
+          Если по итогам года налог, рассчитанный по стандартной ставке 15% от разницы между доходами и расходами, оказывается меньше 1% от общей суммы выручки (либо получен убыток), предприниматель обязан уплатить <strong>минимальный налог в размере 1% от всей суммы полученных доходов</strong> (п. 6 ст. 346.18 НК РФ). Разницу между минимальным налогом и налогом по расчету можно учесть в расходах следующих лет.
+        </div>
+      </details>
+    </div>
+
+    <div class="faq-item">
+      <details>
+        <summary>Какие сроки уплаты налогов и взносов действуют для ИП?</summary>
+        <div class="faq-content">
+          По правилам Единого налогового платежа (ЕНП) действуют следующие сроки:
+          <ul>
+            <li><strong>Авансовые платежи по УСН:</strong> до 28 апреля (за 1 кв.), до 28 июля (за 1 полугодие), до 28 октября (за 9 месяцев).</li>
+            <li><strong>Итоговый налог УСН за год:</strong> до 28 апреля следующего года.</li>
+            <li><strong>Фиксированные взносы (57 390 ₽):</strong> до 28 декабря текущего года.</li>
+            <li><strong>Дополнительный взнос 1%:</strong> до 1 июля следующего года.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <footer>
+    <p>Калькулятор носит информационный характер и рассчитывает показатели на основе базовых ставок НК РФ на 2026 год. Расчет приведен без учета региональных налоговых льгот и актуален для доходов до 60 млн ₽ в год (без обязательства по уплате НДС).</p>
+  </footer>
+</div>
+
+<script>
+  const FIXED_CONTRIB_2026 = 57390; // пп. 1 п. 1.2 ст. 430 НК РФ
+  const MAX_ONE_PERCENT = 321818;    // пп. 2 п. 1.2 ст. 430 НК РФ
+
+  let currentRegime = 'usn6';
+  let hasEmployees = false;
+
+  const incomeInput = document.getElementById('incomeInput');
+  const expenseInput = document.getElementById('expenseInput');
+  const expenseGroup = document.getElementById('expenseGroup');
+
+  const fixedRes = document.getElementById('fixedRes');
+  const onePercentRes = document.getElementById('onePercentRes');
+  const taxRes = document.getElementById('taxRes');
+  const totalTaxesRes = document.getElementById('totalTaxesRes');
+  const netProfitRes = document.getElementById('netProfitRes');
+
+  function formatRub(val) {
+    return Math.round(val).toLocaleString('ru-RU') + ' ₽';
+  }
+
+  function calculate() {
+    const income = Math.max(0, parseFloat(incomeInput.value) || 0);
+    const expenses = Math.max(0, parseFloat(expenseInput.value) || 0);
+
+    let onePercent = 0;
+    if (income > 300000) {
+      onePercent = Math.min((income - 300000) * 0.01, MAX_ONE_PERCENT);
+    }
+
+    const totalContrib = FIXED_CONTRIB_2026 + onePercent;
+    let usnTaxToPay = 0;
+
+    if (currentRegime === 'usn6') {
+      const grossTax = income * 0.06;
+      if (!hasEmployees) {
+        usnTaxToPay = Math.max(0, grossTax - totalContrib);
+      } else {
+        usnTaxToPay = Math.max(grossTax * 0.5, grossTax - totalContrib);
+      }
+    } else {
+      const taxBase = Math.max(0, income - expenses - totalContrib);
+      const calculatedTax = taxBase * 0.15;
+      const minTax = income * 0.01;
+      usnTaxToPay = Math.max(calculatedTax, minTax);
+    }
+
+    const totalTaxesAndContrib = usnTaxToPay + totalContrib;
+    const finalNetProfit = income - (currentRegime === 'usn15' ? expenses : 0) - totalTaxesAndContrib;
+
+    fixedRes.textContent = formatRub(FIXED_CONTRIB_2026);
+    onePercentRes.textContent = formatRub(onePercent);
+    taxRes.textContent = formatRub(usnTaxToPay);
+    totalTaxesRes.textContent = formatRub(totalTaxesAndContrib);
+    netProfitRes.textContent = formatRub(finalNetProfit);
+  }
+
+  document.querySelectorAll('#regimeToggle .toggle-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('#regimeToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      currentRegime = e.target.dataset.regime;
+      expenseGroup.style.display = currentRegime === 'usn15' ? 'block' : 'none';
+      calculate();
+    });
+  });
+
+  document.querySelectorAll('#employeeToggle .toggle-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      document.querySelectorAll('#employeeToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      hasEmployees = e.target.dataset.emp === 'yes';
+      calculate();
+    });
+  });
+
+  incomeInput.addEventListener('input', calculate);
+  expenseInput.addEventListener('input', calculate);
+
+  calculate();
+</script>
+</body>
+</html>
